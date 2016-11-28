@@ -37,7 +37,7 @@
         <ul>
           <% @recipe.instructions.each do |instruction, f| %>
             <li>
-              <%= f + 1 %>
+              <%#= f + 1 %>
               <%= instruction.step %>
             </li>
           <% end %>

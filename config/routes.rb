@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   #root to: "welcome#index"
   resources :recipes
   root "recipes#index"
+  get 'search_recipes', to: "recipes#search"
 end
