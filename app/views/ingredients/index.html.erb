@@ -1,0 +1,11 @@
+<h1>Listing All Ingredients</h1>
+  <% @ingredients.each do |i| %>
+    <ul>
+      <li>
+      <%= link_to "#{i.name}", ingredient_path(i) %>
+      <li><%= pluralize(i.recipes.count, "recipe") %></li>
+      </li>
+    </ul>
+  <% end %>
+
+  <p><%= link_to 'Back to index', :controller => 'recipes', :action => 'index' %></p>

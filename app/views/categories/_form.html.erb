@@ -1,0 +1,10 @@
+<%= form_for(@category) do |f| %>
+ <div class="form-group">
+    <%= f.file_field :image %>
+  </div>
+  <%= f.label :name %>
+  <%= f.text_field :name, placeholder: "Category name" %>   
+  <%= f.submit %>  
+<% end %>
+
+<%= link_to "Cancel request", recipes_path %> 

@@ -15,8 +15,20 @@
           <%#= link_to image_tag("RECIBEE-02-6c11a40bec604adf0f8213d15f0fb4ae0e5776c098d5cb3d6cbb51a0faf0cc5c.jpg",:size => "100x50",:class => "recibee_img"), root_path %>
           <%= link_to "Recibee", root_path %>
         </div>
-        <% if user_signed_in? %>
+        <%# if user_signed_in? %>
+        <% if current_user %>
           <ul class="nav navbar-nav navbar-right">
+            
+              <li class="nav navbar-text">
+                  Welcome <%= current_user.name %>!
+              </li>
+      <li><%= link_to "My Profile", edit_registration_path(current_user)  %></li>
+               <li>
+               <%#= link_to 'List all Ingredients', :controller => 'ingredients', :action => 'index'%>
+            </li>
+            <li>
+                <%#= link_to 'List all Categories', :controller => 'categories', :action => 'index'%>
+            </li>
             <li>
               <%= link_to "Sign Out", destroy_user_session_path, method: :delete %>
             </li>

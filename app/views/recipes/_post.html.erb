@@ -1,0 +1,23 @@
+<div class="row">
+  <% object.each do |recipe| %>
+   <div class="col-md-4">
+      <%= link_to recipe do %>
+          <div class="thumbnail">
+            <%= image_tag recipe.image.url(:medium), class: "recipe_image"  %>
+            <div class="caption">
+            <h3><%= link_to recipe.name, recipe %></h3>
+           <!-- <p>  <%#= recipe.description %> </p>-->
+            </div>
+          </div>
+            <% if recipe.categories.any? %>
+            <p>Categories: <%= render recipe.categories %></p>
+             <% end %>
+            <% end %>
+    </div>
+  <% end %>
+</div>
+
+      
+
+
+

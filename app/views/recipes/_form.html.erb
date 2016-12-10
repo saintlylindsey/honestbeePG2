@@ -1,47 +1,85 @@
-<%= simple_form_for @recipe, html: { multipart: true } do |f| %>
-  <% if @recipe.errors.any? %>
-    <div>
-      <p>
-        <%= @recipe.errors.count %>
-        Prevented this recipe froms saving
-      </p>
-      <ul>
-        <% @recipe.errors.full_messages.each do |msg| %>
-          <li>
-            <%= msg %>
-          </li>
+<div class="container"> 
+  <%= simple_form_for @recipe, html: { multipart: true } do |f| %>
+    <% if @recipe.errors.any? %>
+      <div>
+        <p>
+          <%= @recipe.errors.count %>
+          Prevented this recipe from saving
+        </p>
+        <ul>
+          <% @recipe.errors.full_messages.each do |msg| %>
+            <li>
+              <%= msg %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="panel-body"> 
+      <%= f.input :name, input_html: { class: 'form-control' }%>
+      <%= f.input :description,input_html: { class: 'form-control' } %>
+      <%= f.input :image %>
+      <br>
+      <div class="field">
+        <div id="star-rating"></div>
+      </div>
+      <br>
+      <div><%= f.label "Categories" %></div>
+      <div class="form-group">
+        <div class="row">
+          <div class="checkbox checkbox-primary">
+        <%= f.collection_check_boxes(:category_ids, Category.all, :id, :name) do |cb| %>
+        <% cb.label {cb.check_box + cb.text} %>
         <% end %>
-      </ul>
+          </div>
+       </div>
+      </div>
+      <div><%= f.label "Select Honestbee Ingredients" %></div>
+      <div class="form-group">
+        <div class="row">
+          <div class="checkbox checkbox-primary">
+            <%= f.collection_check_boxes :ingredient_ids, Ingredient.where(hb: true), :id, :name, checked: @recipe.try(:ingredient_ids) do |cb| %>
+              <% cb.label(class: "checkbox-inline input_checkbox") {cb.check_box(class: "checkbox") + cb.text} %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <!--<div>
+          <%#= f.select :ingredient_ids, Ingredient.all.map{ |c|
+            [c.name, c.id] } %>
+      </div>-->
+      <div class="row">
+        <div class="col-md-6">
+          <h3>Ingredients</h3>
+          <div>
+            <%= f.simple_fields_for :ingredients do |ingredient| %>
+              <%= render 'ingredient_fields', f: ingredient %>
+            <% end %>
+            <div>
+              <%= link_to_add_association 'Add Ingredient', f, :ingredients, class: "btn btn-default add-button" %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h3>Instructions</h3>
+          <div>
+            <%= f.simple_fields_for :instructions do |instruction| %>
+              <%= render 'instruction_fields', f: instruction %>
+            <% end %>
+            <div>
+              <%= link_to_add_association 'Add Step', f, :instructions, class: "btn btn-default add-button" %>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <%= f.button :submit, class: "btn btn-primary" %>
   <% end %>
-  <div>
-    <%= f.input :name, input_html: { class: 'form-control' }%>
-    <%= f.input :description,input_html: { class: 'form-control' } %>
-    <%= f.input :image %>
-    <div class="row">
-      <div class="col-md-6">
-        <h3>Ingredients</h3>
-        <div>
-          <%= f.simple_fields_for :ingredients do |ingredient| %>
-            <%= render 'ingredient_fields', f: ingredient %>
-          <% end %>
-          <div>
-            <%= link_to_add_association 'Add Ingredient', f, :ingredients, class: "btn btn-default add-button" %>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <h3>Instructions</h3>
-        <div>
-          <%= f.simple_fields_for :instructions do |instruction| %>
-            <%= render 'instruction_fields', f: instruction %>
-          <% end %>
-          <div>
-            <%= link_to_add_association 'Add Step', f, :instructions, class: "btn btn-default add-button" %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <%= f.button :submit, class: "btn btn-primary" %>
-<% end %>
+</div>
+
+<script>
+  $('#star-rating').raty({
+    path: '/assets/',
+    scoreName: 'recipe[rating]'
+  });
+</script>

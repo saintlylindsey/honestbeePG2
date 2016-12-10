@@ -1,0 +1,9 @@
+<% object.each do |recipe| %>
+              <%= link_to recipe do %>
+                <div class="thumbnail">
+                <%= image_tag recipe.image.url(:medium), class: "recipe_image"  %>
+                <div class="caption">
+                  <h3><%= link_to recipe.name, recipe %></h3>
+                  <p>  <%= recipe.description %> </p>
+          <% end %>
+ <% end %>
