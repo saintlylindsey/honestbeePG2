@@ -5,7 +5,17 @@ Rails.application.routes.draw do
     resources :ingredients
   end 
 
-	devise_for :users, :controllers => { :registrations => "users/registrations" }
+	devise_for :users, :controllers => { 
+    :registrations => "users/registrations",
+    :sessions => "sessions"
+  }
+
+  as :user do
+    post 'sign_in' => 'sessions#create'
+    delete 'sign_out' => 'sessions#destroy'
+    delete 'logout' => 'sessions#logout'
+  end
+  
 #  devise_for :users
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   #root to: "welcome#index"
