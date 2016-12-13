@@ -17,13 +17,8 @@
     <% end %>
     <div class="panel-body"> 
       <%= f.input :name, input_html: { class: 'form-control' }%>
-      <%= f.input :description,input_html: { class: 'form-control' } %>
+      <%= f.input :description, as: :text, input_html: { class: 'form-control', :cols => 5, :rows => 10 } %>
       <%= f.input :image %>
-      <br>
-      <div class="field">
-        <div id="star-rating"></div>
-      </div>
-      <br>
       <div><%= f.label "Categories" %></div>
       <div class="form-group">
         <div class="row">
@@ -37,11 +32,8 @@
       <div><%= f.label "Select Honestbee Ingredients" %></div>
       <div class="form-group">
         <div class="row">
-          <div class="checkbox checkbox-primary">
-            <%= f.collection_check_boxes :ingredient_ids, Ingredient.where(hb: true), :id, :name, checked: @recipe.try(:ingredient_ids) do |cb| %>
-              <% cb.label(class: "checkbox-inline input_checkbox") {cb.check_box(class: "checkbox") + cb.text} %>
-            <% end %>
-          </div>
+           <%= f.select :ingredient_ids, options_for_select(@ingredients.collect { |ingredient|
+            [ingredient.name, ingredient.id] }, 1), {}, { id: 'ingredients_select', multiple: true } %>
         </div>
       </div>
       <!--<div>
@@ -76,10 +68,3 @@
     <%= f.button :submit, class: "btn btn-primary" %>
   <% end %>
 </div>
-
-<script>
-  $('#star-rating').raty({
-    path: '/assets/',
-    scoreName: 'recipe[rating]'
-  });
-</script>

@@ -12,16 +12,99 @@
           <p>
             <%= @recipe.description %>
           </p>
-          <div class="star-rating" data-score= <%= @recipe.rating %> ></div>
           <p>
             Submitted by
             <%= @recipe.user.email %>
+          </p>
+          <p>
+            <div class="star-rating" data-score= <%= @avg_review %> ></div>
+            <em><%= "#{@reviews.length} reviews" %></em>
           </p>
         </div>
       </div>
     </div>
   </div>
   <hr>
+  <div>
+  <% if @reviews.blank? %>
+    <h3>No reviews just yet, would you like to add the first!</h3>
+    <%= link_to "Write Review", new_recipe_review_path(@recipe), class: "btn btn-danger" %>
+  <% else %>
+    <%= link_to "Write Review", new_recipe_review_path(@recipe), class: "btn btn-danger" %>
+  <% end %>
+  </div>
+  <!-- insert here -->
+  <div class="row">
+    <div class="col-md-8">
+      <div>
+        <h2>Ingredients</h2>
+        <ul>
+              <% p=0 %>
+              <% c=0 %>
+              <% s=0 %>
+              <% f=0 %>
+              <% @recipe.ingredients.each do |i| %>
+                <li><%= i.name %></li>
+                <% @search = Openfoodfacts::Product.search(i.name, locale: 'world', page_size: 3) %>
+                <% @nutrition = @search.first.fetch %>
+                <% @string_to_parse = @nutrition.to_json %>
+                <% @hash = JSON.parse(@string_to_parse) %>
+                <% protein= (@hash['nutriments']['proteins_100g']).to_f %>
+                <% p = protein + p %>
+                <% carbohydrates= (@hash['nutriments']['carbohydrates_100g']).to_f %>
+                <% c = carbohydrates + c %>
+                <% sugars=(@hash['nutriments']['sugars_100g']).to_f %>
+                <% s = sugars + s %>
+                <% fats=(@hash['nutriments']['fat_100g']).to_f %>
+                <% f = fats + f %>
+              <% end %>
+        </ul>
+        <h2> Nutritional Analysis </h2>
+              <ul>
+                <% no_of_ingredients=@recipe.ingredients.count %>
+                <li>Proteins per 100g: <%= p/no_of_ingredients %></li>
+                <li>Carbohydrates per 100g: <%= c/no_of_ingredients %></li>
+                <li>Sugars per 100g: <%= s/no_of_ingredients %></li>
+                <li>Fats per 100g: <%= f/no_of_ingredients %></li>
+              </ul>
+      </div>
+    </div>
+  </div> 
+  <div class="row">
+    <div class="col-md-8">
+      <div>
+        <h5>Further Details:</h5>
+        <table class="table">
+          <thead>
+            <th>Proteins per 100g</th>
+            <th>Carbohydrates per 100g</th>
+            <th>Sugars per 100g</th>
+            <th>Fats per 100g</th>
+          </thead>
+          <tbody>
+            <tr>
+              <% @recipe.ingredients.each do |i| %>
+                <td><%= i.name %></td>
+                <% @search = Openfoodfacts::Product.search(i.name, locale: 'world', page_size: 3) %>
+                <% @nutrition = @search.first.fetch %>
+                <% @string_to_parse = @nutrition.to_json %>
+                <% @hash = JSON.parse(@string_to_parse) %>
+                <td><%= (@hash['nutriments']['proteins_100g']).to_f %></td>
+                <td><%= carbohydrates= (@hash['nutriments']['carbohydrates_100g']).to_f %></td>
+                <td><%=(@hash['nutriments']['sugars_100g']).to_f %></td>
+                <td><%=(@hash['nutriments']['fat_100g']).to_f %></td>
+            <tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+
+ <!-- insert here -->
+
   <div class="row">
     <div class="col-md-3">
       <div>
@@ -61,7 +144,18 @@
       <% end %>
     </div>
   </div>
-</div>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Reviews</h2>
+      <% @reviews.each do |review| %>
+        <div>
+          <div class="star-rating" data-score= <%= review.rating %> ></div>
+          <p><%= review.comment %></p>
+        </div>
+        <% end %>
+     </div>
+  </div>
+</div> <!-- close container -->
 
 <script>
     $('.star-rating').raty({

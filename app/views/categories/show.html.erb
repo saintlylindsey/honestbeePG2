@@ -3,9 +3,9 @@
 	<h1><%= @category.name %></h1>
 	<%= render 'recipes/post', object: @category_recipes %>
 	<%# include admin check to ensure can only edit/create new category %>
-	<span><%= link_to "Edit Category Name", edit_category_path(@category) %></span>
+	<span><%#= link_to "Edit Category Name", edit_category_path(@category) %></span>
 	|
-	<span><%= link_to "Create New Category", new_category_path(@category) %></span>
+	<span><%#= link_to "Create New Category", new_category_path(@category) %></span>
 
-	 <p><%= link_to 'Back to index', :controller => 'recipes', :action => 'index' %></p>
+	 <p><%#= link_to 'Back to index', :controller => 'recipes', :action => 'index' %></p>
 </div>

@@ -1,4 +1,4 @@
 <div class='nested-fields'>
-    <%= f.input :step %>
+    <%= f.input :step, as: :text, input_html: { class: 'form-control', :cols => 5, :rows => 10 } %>
     <%= link_to_remove_association "remove step", f %>
 </div>

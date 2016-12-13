@@ -2,6 +2,9 @@ class RecipesController < ApplicationController
 	before_action :find_recipe, only: [:show, :edit, :update, :destroy]
 	before_action :authenticate_user!, except: [:index, :show]
 
+	require 'openfoodfacts'
+	require 'json'
+
 	def index
 		@recipes=Recipe.all
 		if params[:search]
@@ -12,10 +15,17 @@ class RecipesController < ApplicationController
 	end
 
 	def show
+		 @reviews = Review.where(recipe_id: @recipe.id).order("created_at DESC")
+		  if @reviews.blank?
+      	@avg_review = 0
+    	else
+      	@avg_review = @reviews.average(:rating).round(2)
+    	end
 	end
 
 	def new
 		@recipe = current_user.recipes.new
+		@ingredients = Ingredient.where(hb: true)
 	end
 
 	def create
@@ -30,6 +40,7 @@ class RecipesController < ApplicationController
 	end
 
 	def edit
+		@ingredients = Ingredient.where(hb: true)
 	end
 
 	def update
