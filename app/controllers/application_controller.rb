@@ -1,3 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
+  include MobileAuthenticationHelper
+  protect_from_forgery with: :null_session
+  before_action :authenticate_user_from_token, if: :is_mobile_app?
 end
