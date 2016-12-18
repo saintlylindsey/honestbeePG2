@@ -32,8 +32,6 @@
       <div><%= f.label "Select Honestbee Ingredients" %></div>
       <div class="form-group">
         <div class="row">
-           <%= f.select :ingredient_ids, options_for_select(@ingredients.collect { |ingredient|
-            [ingredient.name, ingredient.id] }, 1), {}, { id: 'ingredients_select', multiple: true } %>
         </div>
       </div>
       <!--<div>

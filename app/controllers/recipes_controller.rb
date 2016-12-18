@@ -30,7 +30,6 @@ class RecipesController < ApplicationController
 
 	def create
 		@recipe = current_user.recipes.new(recipe_params)
-
 		if @recipe.save
 			flash[:notice] = "Successfully created a new recipe"
 			redirect_to @recipe
